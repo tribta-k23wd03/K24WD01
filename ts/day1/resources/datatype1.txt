@@ -1,0 +1,35 @@
+// any type:
+let sales: number = 123_456_789;
+let course: string = "TypeScript";
+let is_published: boolean = true;
+let level;
+
+level = true;
+
+console.log(typeof level);
+
+// "noImplicitAny": true,
+function render(document: string) {
+  console.log(document);
+}
+render("string");
+
+// EXAMPLE:
+// Arrays: number[]
+const numbers = [1, 2, 3];
+numbers[0] = 100;
+// numbers[1] = "Two"; // error String to number
+// sử dụng for loops in ra từng index.
+for(const key of numbers){
+    console.log(key); // 100, 2, 3
+}
+for(const key in numbers){
+    console.log(key,":" ,numbers[key]); // 0,1,2
+}
+
+
+// Arrays: any[] : Type annotation
+const texts: string[] = [];
+// texts[0] = 1; // Error number to string
+texts[1] = "Two";
+console.log(typeof texts);

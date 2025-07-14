@@ -1,0 +1,63 @@
+/**
+ * ==============================
+ * LESSON: Tuples
+ * ==============================
+ * 1. specials data types của Arrays
+ * ==============================
+ */
+
+let user: [string, number] = ["Lucius Ceasar", 1];
+console.log(user[0].toUpperCase()); //
+console.log(user[1].toFixed(4)); // 1.0000
+
+/**
+ * ==============================
+ * LESSON: Add new index vào cuối array
+ * ==============================
+ * 1.
+ * ==============================
+ */
+
+user.push(999);
+console.log(user); //["Lucius Ceasar", 1, 999]
+// NOTE:
+//Tham khảo:
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/push
+
+/**
+ * ==============================
+ * LESSON: Enums
+ * ==============================
+ * 1. Chứa các giá trị constant
+ * ==============================
+ */
+
+//EXAMPLE:
+const small = 3;
+// const medium = 2;
+// const large = 3;
+
+enum Size {
+  Small = small,
+  Medium,
+  Large,
+  XXL,
+}
+
+let mySize: Size = Size.Large;
+console.log(mySize);
+
+enum Roles {
+  Admin,
+  Customer,
+  Anonymous,
+}
+
+let myRole: Roles = Roles.Customer;
+
+enum gender {
+  male,
+  female,
+}
+
+let myGender: gender = gender.male;
