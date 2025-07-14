@@ -1,149 +1,141 @@
 /**
  * ==============================
- * LESSON: Objects
- * ==============================
- * 1. Khai báo Object Tường minh.
+ * LESSON: type aliases
  * ==============================
  */
-
-let employee: { id: number; name: string; isEmployed: boolean } = {
-  id: 1,
-  name: "Harry",
-  isEmployed: true,
-};
-
-console.log(employee);
-
-// 2. Sử dụng interface để định nghĩa 1 OBJ:
-interface Person {
+let employee1: {
+  readonly id: number;
   name: string;
-  age?: number;
-  isEmployed: boolean;
-}
-
-// let person: Person = {
-//   name: "Potter",
-//   // age: 18,
-//   isEmployed: true,
-// };
-
-// 3. Type Alias để đ/n 1 obj:
-type Car = {
-  brand: string;
-  model: string;
-  year: number;
-};
-
-let myCar: Car = {
-  brand: "Toyota",
-  model: "Camry",
-  year: 2025,
-};
-
-// 2.1> Readonly Property:
-interface Config {
-  readonly apiUrl: string;
-  timeout: number;
-}
-
-let config: Config = { apiUrl: "https://localhost:9999/...", timeout: 5000 };
-console.log(config);
-// config.apiUrl = "...";
-
-// 2.2> Index Signature (dynamic properties)
-interface Dictionary {
-  [key: string]: string; // NOTE: chấp nhận mọi props miễn là có kiểu string
-}
-
-let translation: Dictionary = {
-  hello: "Xin chào",
-  goodbye: "Tạm biệt",
-  "go home!": "Đi về nhà!",
-};
-
-console.log(translation.hello); // dot notation
-console.log(translation["goodbye"]); // bracket notation
-console.log(translation["go home!"]);
-
-// 2.3> Object methods trong typescript:
-interface Calculator {
-  add: (a: number, b: number) => number;
-  subtract: (a: number, b: number) => number;
-}
-
-let calc: Calculator = {
-  add: (a, b) => a + b,
-  subtract: (a, b) => {
-    return a - b;
+  retire: (date: Date) => void;
+} = {
+  id: 1,
+  name: "Gabriel",
+  retire: (date: Date) => {
+    console.log(date);
   },
 };
 
-console.log(calc.add(5, 3));
-console.log(calc.subtract(10, 4));
+type Employee = {
+  readonly id: number;
+  name: string;
+  retire: (date: Date) => void;
+};
 
-// 2.4> inheritance interface:
-interface Animal {
+let employee: Employee = {
+  id: 1,
+  name: "Gabriel",
+  retire: (date: Date) => {
+    console.log(date);
+  },
+};
+
+// EXCERCISE: 1
+type Person = {
   name: string;
   age: number;
-}
-
-interface Cat extends Animal {
-  breed: string;
-}
-
-let myCat: Cat = {
-  breed: "England",
-  name: "Dog",
-  age: 4,
 };
 
-// Generic Type
-// synctax Pascal: "IAmHarry"
-// camelCase: "myCat"
-interface ApiResponse<GenericType> {
-  status: string;
-  data: GenericType;
-}
-let userResponse: ApiResponse<{ id: number; name: string }> = {
-  status: "success",
-  data: { id: 1, name: "CatWoman" },
+const person1: Person = {
+  name: "Donald Trump",
+  age: 85,
 };
-console.log(userResponse);
 
-// 4. Sử dụng Class trong định nghĩa Obj:
-class Person {
+console.log(person1);
+
+// NOTE: Union Type
+function kgToLbs(weight: number | string): number {
+  if (typeof weight === "number") {
+    return weight * 2.2;
+  }
+  return parseInt(weight) * 2.2;
+}
+
+console.log(kgToLbs(65)); // 143
+console.log(kgToLbs("65")); // 143
+
+// EXCERCISE: 2
+type Status = "success" | "error" | "pending";
+
+let responseStatus: Status = "pending";
+
+// NOTE: Intersection Type &: combine 2 type aliases
+// let weight: number & string;
+// weight = 1;
+
+type Draggable = {
+  drag: () => void;
+};
+
+type Resized = {
+  resize: () => void;
+};
+
+type UIWidget = Draggable & Resized;
+
+let textBox: UIWidget = {
+  drag: () => {
+    console.log("Dragging Element");
+  },
+  resize: () => {
+    console.log("Resize Element");
+  },
+};
+
+// EXCERCISE:3
+// EmployeeDeveloper combines Employee name, age and Developer skills with &, and prints to console
+
+type Employee1 = {
   myName: string;
   myAge: number;
+};
+type Developer1 = {
+  skills: string[];
+};
+type Employee1Developer1 = Employee1 & Developer1;
 
-  constructor(name: string, age: number) {
-    this.myName = name;
-    this.myAge = age;
-  }
-  greet() {
-    return `Hello, my name is ${this.myName}`;
-  }
+const dev: Employee1Developer1 = {
+  myName: "Harry",
+  myAge: 18,
+  skills: ["js", "ts", "c"],
+};
+console.log(dev);
+
+// NOTE: Literal Type (yêu cầu khai báo chính xác giá trị)
+type Quantity = 50 | 100; // type aliases + unions + inital value = Literal Type
+let quantity: Quantity = 100;
+
+console.log("Selected Quantity:" + quantity);
+console.log("Selected Quantity:", quantity);
+console.log(`"Selected Quantity: " ${quantity}`);
+
+type Metric = "cm" | "inch";
+let unit: Metric = "cm";
+
+console.log(`"Selected Metric: " ${unit}`); // cm
+
+// EXCERCISE:4
+type OrderStatus = "pending" | "shipped" | "delivered" | "canceled";
+type PaymentMethod = "credit_card" | "paypal" | "bank_transfer";
+
+interface Order {
+  id: number;
+  status: OrderStatus;
+  payment?: PaymentMethod;
 }
 
-let person1 = new Person("John", 30);
-console.log(person1);
-console.log(person1.greet());
+let myOrder: Order = {
+  id: 1,
+  status: "pending",
+  payment: "credit_card",
+};
 
-// tính chất đóng gói với private và public:
-class BankAccount {
-  private balance: number;
-  constructor(initialValue: number) {
-    this.balance = initialValue;
-  }
+console.log("Initialize Order: ", myOrder);
 
-  deposit(amount: number) {
-    this.balance += amount;
-  }
-  getBalance() {
-    return this.balance;
-  }
+myOrder.status = "shipped";
+console.log("Initialize Order: ", myOrder);
+
+function updateOrderStatus(o: Order, newStatus: OrderStatus) {
+  o.status = newStatus;
+  console.log(`Order ${o.id} status updated to: ${o.status}`);
 }
-let account = new BankAccount(50_000);
-account.deposit(2_000_000);
-
-// account.balance = 0;
-console.log(account.getBalance()); // 2_050_000
+updateOrderStatus(myOrder, "canceled");

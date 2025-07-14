@@ -1,68 +1,63 @@
 "use strict";
-let employee = {
+let employee1 = {
     id: 1,
-    name: "Harry",
-    isEmployed: true,
-};
-console.log(employee);
-let myCar = {
-    brand: "Toyota",
-    model: "Camry",
-    year: 2025,
-};
-let config = { apiUrl: "https://localhost:9999/...", timeout: 5000 };
-console.log(config);
-let translation = {
-    hello: "Xin chào",
-    goodbye: "Tạm biệt",
-    "go home!": "Đi về nhà!",
-};
-console.log(translation.hello);
-console.log(translation["goodbye"]);
-console.log(translation["go home!"]);
-let calc = {
-    add: (a, b) => a + b,
-    subtract: (a, b) => {
-        return a - b;
+    name: "Gabriel",
+    retire: (date) => {
+        console.log(date);
     },
 };
-console.log(calc.add(5, 3));
-console.log(calc.subtract(10, 4));
-let myCat = {
-    breed: "England",
-    name: "Dog",
-    age: 4,
+let employee = {
+    id: 1,
+    name: "Gabriel",
+    retire: (date) => {
+        console.log(date);
+    },
 };
-let userResponse = {
-    status: "success",
-    data: { id: 1, name: "CatWoman" },
+const person1 = {
+    name: "Donald Trump",
+    age: 85,
 };
-console.log(userResponse);
-class Person {
-    constructor(name, age) {
-        this.myName = name;
-        this.myAge = age;
-    }
-    greet() {
-        return `Hello, my name is ${this.myName}`;
-    }
-}
-let person1 = new Person("John", 30);
 console.log(person1);
-console.log(person1.greet());
-class BankAccount {
-    constructor(initialValue) {
-        this.balance = initialValue;
+function kgToLbs(weight) {
+    if (typeof weight === "number") {
+        return weight * 2.2;
     }
-    deposit(amount) {
-        this.balance += amount;
-    }
-    getBalance() {
-        return this.balance;
-    }
+    return parseInt(weight) * 2.2;
 }
-let account = new BankAccount(50000);
-account.deposit(2000000);
-account.balance = 0;
-console.log(account.getBalance());
+console.log(kgToLbs(65));
+console.log(kgToLbs("65"));
+let responseStatus = "pending";
+let textBox = {
+    drag: () => {
+        console.log("Dragging Element");
+    },
+    resize: () => {
+        console.log("Resize Element");
+    },
+};
+const dev = {
+    myName: "Harry",
+    myAge: 18,
+    skills: ["js", "ts", "c"],
+};
+console.log(dev);
+let quantity = 100;
+console.log("Selected Quantity:" + quantity);
+console.log("Selected Quantity:", quantity);
+console.log(`"Selected Quantity: " ${quantity}`);
+let unit = "cm";
+console.log(`"Selected Metric: " ${unit}`);
+let myOrder = {
+    id: 1,
+    status: "pending",
+    payment: "credit_card",
+};
+console.log("Initialize Order: ", myOrder);
+myOrder.status = "shipped";
+console.log("Initialize Order: ", myOrder);
+function updateOrderStatus(o, newStatus) {
+    o.status = newStatus;
+    console.log(`Order ${o.id} status updated to: ${o.status}`);
+}
+updateOrderStatus(myOrder, "canceled");
 //# sourceMappingURL=index.js.map
