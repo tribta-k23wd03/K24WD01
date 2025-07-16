@@ -1,0 +1,101 @@
+/**
+ * ==============================
+ * LESSON: Đa hình - Overriding
+ * ==============================
+ */
+class Shape {
+  compute(): number {
+    return 0;
+  }
+}
+
+class Rectangle extends Shape {
+  constructor(public width: number, public height: number) {
+    super();
+  }
+
+  override compute(): number {
+    return this.width * this.height;
+  }
+}
+
+class Circle extends Shape {
+  constructor(public radius: number) {
+    super();
+  }
+  override compute(): number {
+    return parseFloat((Math.PI * this.radius ** 2).toFixed(2));
+  }
+}
+
+const shapes: Shape[] = [new Rectangle(5, 10), new Circle(3)];
+shapes.forEach((s) => console.log(s.compute()));
+
+/**
+ * ==============================
+ * LESSON: keyof dùng để lấy key bên trong một Object bất kỳ
+ * ==============================
+ */
+interface Employee {
+  id: number;
+  name: string;
+  address: {
+    city: string;
+    zipCode: number;
+  };
+}
+
+type EmployeeType = keyof Employee;
+type AddressKeys = keyof Employee["address"];
+
+const employeeId: EmployeeType = "id";
+const employeeName: EmployeeType = "name";
+const employeeAddress: EmployeeType = "address";
+
+type arr = string[];
+
+type ArrayKey = keyof arr;
+
+const arrayMethod: ArrayKey = "concat";
+
+// NOTE: kết hợp keyof & typeof
+const userObj = {
+  userID: 1,
+  username: "ABC",
+};
+
+type UserOfKeys = keyof typeof userObj;
+
+const checkValidKey: UserOfKeys = "username";
+
+// NOTE: Spread Operator:
+const arr1 = [1, 2, 3];
+const arr2 = [4, 5, 6];
+
+const mergeArray = [...arr1, ...arr2];
+
+console.log(mergeArray);
+
+// copy array:
+const copyArr = [...mergeArray];
+console.log(copyArr);
+
+// Object:
+const obj1 = { name: "Alice", age: 18 };
+const obj2 = { country: "USA" };
+const mergeObj = { ...obj1, ...obj2 };
+console.log(mergeObj);
+
+// rest operators
+function sum(...numbers: number[]): number {
+  return numbers.reduce((acc, num) => acc + num);
+}
+
+console.log(sum(1, 2, 3, 4, 5));
+
+// rest operators object
+const user = { id: 1, name: "ABC" };
+const { ...details } = user;
+
+console.log(user); // ??? 
+console.log(details); // ???
