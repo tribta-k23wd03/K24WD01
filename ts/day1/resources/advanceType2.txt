@@ -1,0 +1,127 @@
+/**
+ * ==============================
+ * LESSON: Nullable
+ * ==============================
+ */
+function greet(name: string | null | undefined) {
+  if (name) console.log(name.toUpperCase());
+  console.log("name is null or undefined");
+  // if (name) {
+  //   console.log(name.toUpperCase());
+  // } else {
+  //   console.log("name is null");
+  // }
+}
+
+greet(null);
+greet(undefined);
+
+// EXCERCISE: Nullable
+
+interface UserProfile {
+  id: number;
+  name: string;
+  email: string | null;
+  phone?: string;
+}
+
+function printUserInfo(user: UserProfile) {
+  console.log(`User ID: ${user.id}`);
+  console.log(`User name: ${user.name}`);
+
+  const msg = user.email !== null ? user.email : "Email not provided";
+  console.log(`User email: ${msg}`);
+
+  // console.log(`User phone: ${user.phone !== undefined ? user.phone : "Phone not provided"}`);
+  console.log(`User phone: ${user.phone ?? "Phone not provided"}`);
+}
+
+const user1: UserProfile = {
+  id: 1,
+  name: "Jason",
+  email: "jason@gmail.com",
+  phone: "0123456789",
+};
+const user2: UserProfile = {
+  id: 2,
+  name: "Michael",
+  email: null,
+};
+const user3: UserProfile = {
+  id: 3,
+  name: "Potter",
+  email: "potter@gmail.com",
+};
+
+printUserInfo(user1);
+printUserInfo(user2);
+printUserInfo(user3);
+
+/**
+ * ==============================
+ * LESSON: Optional Chaining
+ * ==============================
+ */
+type Customer = { birthday?: Date };
+
+function getCustomer(id: number): Customer | null | undefined {
+  return id === 0 ? null : { birthday: new Date() };
+}
+
+let customer = getCustomer(1);
+
+console.log(customer?.birthday?.getFullYear());
+
+// Nullish coalescing Operator
+let speed: number | null = null;
+
+let ride = {
+  speed: speed ?? 60, // FIX: "Variable 'speed' is used before being assigned"
+};
+
+console.log(ride);
+
+// generic type
+function getSetting<T>(userSetting: T, defaultSetting: T): T {
+  return userSetting ?? defaultSetting; // check undefined & null
+}
+
+// TEST_CASE:
+console.log(getSetting(null, "Dark Mode")); // dark mode
+console.log(getSetting(undefined, 50)); // 50
+console.log(getSetting("", "#000000")); // ""
+console.log(getSetting(0, 100)); // 0
+console.log(getSetting(false, true)); // false
+
+/**
+ * ==============================
+ * LESSON: Type Assertions
+ *
+ */
+// let phone = <HTMLInputElement>document.getElementById("phone");
+// phone.value;
+
+interface User {
+  id: number;
+  name: string;
+  email?: string;
+}
+
+function getUser(data: any): User {
+  return data as User;
+}
+
+const rawData: any = {
+  id: 1,
+  name: "Harry",
+  email: "john@gmail.com",
+};
+const user: User = getUser(rawData);
+console.log(user);
+
+// kiểm tra kiểu dữ liệu tại thời điểm thực thi
+function isUser(obj: any): obj is User {
+  return obj && typeof obj.id === "number" && obj.name === "string";
+}
+
+console.log(isUser(user) ? "Valid User" : "Invalid User");
