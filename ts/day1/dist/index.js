@@ -1,69 +1,56 @@
 "use strict";
-var _a;
-function greet(name) {
-    if (name)
-        console.log(name.toUpperCase());
-    console.log("name is null or undefined");
+class Person {
+    constructor(n, a) {
+        this.name = n;
+        this.age = a;
+    }
+    introduce() {
+        console.log(`Hi, my name is ${this.name} and my age is: ${this.age}`);
+    }
 }
-greet(null);
-greet(undefined);
-function printUserInfo(user) {
-    var _a;
-    console.log(`User ID: ${user.id}`);
-    console.log(`User name: ${user.name}`);
-    const msg = user.email !== null ? user.email : "Email not provided";
-    console.log(`User email: ${msg}`);
-    console.log(`User phone: ${(_a = user.phone) !== null && _a !== void 0 ? _a : "Phone not provided"}`);
+const person = new Person("Michale", 18);
+person.name;
+person.age;
+person.introduce();
+class Person2 {
+    constructor(n = "John", a = 18) {
+        this.name = n;
+        this.age = a;
+    }
+    introduce() {
+        console.log(`Hi, my name is ${this.name} and my age is: ${this.age}`);
+    }
 }
-const user1 = {
-    id: 1,
-    name: "Jason",
-    email: "jason@gmail.com",
-    phone: "0123456789",
-};
-const user2 = {
-    id: 2,
-    name: "Michael",
-    email: null,
-};
-const user3 = {
-    id: 3,
-    name: "Potter",
-    email: "potter@gmail.com",
-};
-printUserInfo(user1);
-printUserInfo(user2);
-printUserInfo(user3);
-function getCustomer(id) {
-    return id === 0 ? null : { birthday: new Date() };
+const person2 = new Person2();
+class Person3 {
+    constructor(myName, myAge) {
+        this.myName = myName;
+        this.myAge = myAge;
+    }
+    introduce() {
+        console.log(`Hi, my name is ${this.myName} and my age is: ${this.myAge}`);
+    }
 }
-let customer = getCustomer(1);
-console.log((_a = customer === null || customer === void 0 ? void 0 : customer.birthday) === null || _a === void 0 ? void 0 : _a.getFullYear());
-let speed = null;
-let ride = {
-    speed: speed !== null && speed !== void 0 ? speed : 60,
-};
-console.log(ride);
-function getSetting(userSetting, defaultSetting) {
-    return userSetting !== null && userSetting !== void 0 ? userSetting : defaultSetting;
+const person3 = new Person3("Harry", 18);
+class Car {
+    constructor(brand, model, year) {
+        this.brand = brand;
+        this.model = model;
+        this.year = year;
+    }
+    getModel() {
+        return this.model;
+    }
+    getYear() {
+        return this.year;
+    }
+    setYear() {
+        return (this.year = new Date());
+    }
 }
-console.log(getSetting(null, "Dark Mode"));
-console.log(getSetting(undefined, 50));
-console.log(getSetting("", "#000000"));
-console.log(getSetting(0, 100));
-console.log(getSetting(false, true));
-function getUser(data) {
-    return data;
-}
-const rawData = {
-    id: 1,
-    name: null,
-    email: "john@gmail.com",
-};
-const user = getUser(rawData);
-console.log(user);
-function isUser(obj) {
-    return obj && typeof obj.id === "number";
-}
-console.log(isUser(user) ? "Valid User" : "Invalid User");
+const car = new Car("Toyota", "Camry", new Date());
+console.log(car.brand);
+console.log(car.getModel());
+car.setYear();
+console.log(car.getYear());
 //# sourceMappingURL=index.js.map

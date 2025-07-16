@@ -1,0 +1,117 @@
+/**
+ * ==============================
+ * LESSON: Class
+ * ==============================
+ */
+
+// Cách 1:
+// constructor function:
+class Person {
+  // property
+  name: string;
+  age: number;
+
+  // constructor
+  constructor(n: string, a: number) {
+    this.name = n;
+    this.age = a;
+  }
+
+  // method:
+  introduce(): void {
+    console.log(`Hi, my name is ${this.name} and my age is: ${this.age}`);
+  }
+}
+
+// khởi tạo object:
+const person = new Person("Michale", 18);
+
+person.name;
+person.age;
+person.introduce();
+
+// Cách 2: Default Parameter
+class Person2 {
+  // property
+  name: string;
+  age: number;
+
+  // constructor
+  constructor(n: string = "John", a: number = 18) {
+    this.name = n;
+    this.age = a;
+  }
+
+  // method:
+  introduce(): void {
+    console.log(`Hi, my name is ${this.name} and my age is: ${this.age}`);
+  }
+}
+
+// khởi tạo object:
+const person2 = new Person2();
+
+// Cách 3: Default Parameter
+class Person3 {
+  // constructor
+  constructor(private myName: string, private myAge: number) {}
+
+  // method:
+  introduce(): void {
+    console.log(`Hi, my name is ${this.myName} and my age is: ${this.myAge}`);
+  }
+}
+
+// khởi tạo object:
+const person3 = new Person3("Harry", 18);
+
+// protected, public, private:
+class Car {
+  constructor(
+    public readonly brand: string,
+    private model: string,
+    protected year: Date
+  ) {}
+
+  getModel(): string {
+    return this.model;
+  }
+  getYear(): Date {
+    return this.year;
+  }
+  setYear(): Date {
+    return (this.year = new Date());
+  }
+}
+
+const car = new Car("Toyota", "Camry", new Date());
+
+console.log(car.brand); // "toyota"
+console.log(car.getModel()); // Camry
+car.setYear();
+console.log(car.getYear()); // 2025
+
+// EXCERCISE:
+class Employee {
+  public readonly name: string;
+  protected department: string;
+  protected salary: number;
+  readonly id: string;
+
+  constructor(name: string, department: string, salary: number, id: string) {
+    this.name = name;
+    this.department = department;
+    this.salary = salary;
+    this.id = id;
+  }
+
+  getInfo(): void {
+    console.log(
+      `Name: ${this.name}, Deparment: ${this.department}, Salary: ${this.salary}, ID: ${this.id}`
+    );
+  }
+}
+const employee = new Employee("Jose", "IT", 500, "IT102");
+employee.getInfo();
+// employee.id = "IT103"; // readonly
+// employee.name = "Minh"; // readonly
