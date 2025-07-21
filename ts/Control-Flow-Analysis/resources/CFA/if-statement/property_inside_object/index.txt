@@ -1,0 +1,22 @@
+/**
+ * ==============================
+ * LESSON: property in object - CFA
+ * ==============================
+ */
+type UserInput = string | { error: string };
+
+function getUserInput(): UserInput {
+  // 0 -> 1
+  // 0.5
+  // 0 -> 0.499... = "string";
+  // 0.5 -> 1 = number;
+  return Math.random() < 0.5 ? "String Type" : { error: "Invalid" };
+}
+
+const input = getUserInput(); // "String Type" | 99
+
+if (typeof input === "object" && input !== null && "error" in input) {
+  console.log("Error", input.error);
+} else {
+  console.log("String input", input.toLowerCase());
+}

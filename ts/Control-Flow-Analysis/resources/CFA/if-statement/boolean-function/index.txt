@@ -1,0 +1,31 @@
+/**
+ * ==============================
+ * LESSON: Type-Guard - function kiểm tra data type
+ * ==============================
+ */
+
+// function getUserInput(): number | number[] {
+//   // 0 -> 1
+//   // 0.5
+//   // 0 -> 0.499... = "string";
+//   // 0.5 -> 1 = number;
+//   return Math.random() < 0.5 ? [7, 8, 9] : 9;
+// }
+
+// const input = getUserInput();
+
+// if (Array.isArray(input)) {
+//   console.log("Array", input);
+// } else {
+//   console.log("Number", input);
+// }
+
+function getUserInput(): string | number {
+  return Math.random() < 0.5 ? "ABC" : 999;
+}
+
+const input = getUserInput();
+
+const inputLength =
+  typeof input === "string" && input.length ? input.length : undefined;
+console.log("Input length (if string) =", inputLength);

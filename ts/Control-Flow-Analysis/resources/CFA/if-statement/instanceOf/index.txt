@@ -1,0 +1,15 @@
+function getUserInput(): number | number[] {
+  // 0 -> 1
+  // 0.5
+  // 0 -> 0.499... = "string";
+  // 0.5 -> 1 = number;
+  return Math.random() < 0.5 ? [1, 2, 3, 4, 5] : 99;
+}
+
+const input = getUserInput();
+
+if (input instanceof Array) {
+  console.log("String input", input.join(","));
+} else {
+  console.log("Number input", input.toFixed(2));
+}

@@ -1,0 +1,21 @@
+/**
+ * ==============================
+ * LESSON: typeof - CFA
+ * ==============================
+ */
+
+function getUserInput(): string | number {
+  // 0 -> 1
+  // 0.5
+  // 0 -> 0.499... = "string";
+  // 0.5 -> 1 = number;
+  return Math.random() < 0.5 ? "String Type" : 99;
+}
+
+const input = getUserInput(); // "String Type" | 99
+
+if (typeof input === "string") {
+  console.log("String input", input.toUpperCase());
+} else {
+  console.log("Number input", input + 10);
+}
