@@ -1,0 +1,17 @@
+{
+  "name": "nodejs-app-01",
+  "version": "1.0.0",
+  "description": "this is my first time to do nodejs",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@types/node": "^24.0.15",
+    "typescript": "^5.8.3"
+  }
+}
