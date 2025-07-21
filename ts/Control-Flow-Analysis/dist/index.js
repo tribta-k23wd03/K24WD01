@@ -1,35 +1,31 @@
 "use strict";
 /**
  * ==============================
- * LESSON: Type Guards
+ * LESSON: Assertion function
  * ==============================
- * Cũng là một function, nó trả về kết quả để xác
- * định kiểu của Object.
+ * assertion = khẳng định kiểu dữ liệu của 1 variable
+ * có thể throw error!
  */
-class APIErrorResponse {
-    constructor(errorCode, message) {
-        this.errorCode = errorCode;
-        this.message = message;
-    }
-}
-class APISuccessResponse {
+class SuccessResponse {
     constructor(data) {
         this.data = data;
     }
 }
-function getResponse() {
-    if (Math.random() > 0.5) {
-        return new APISuccessResponse({ success: "OK" });
+class ErrorResponse {
+    constructor(error) {
+        this.error = error;
     }
-    return new APIErrorResponse(404, "Not Found");
 }
-function isErrorResponse(obj) {
-    return obj instanceof APIErrorResponse;
+function getResponse() {
+    if (Math.random() > 0.5)
+        return new SuccessResponse({ data: "OK" });
+    return new ErrorResponse("Something went wrong");
 }
-const res = getResponse(); // { success: "OK" } | 404, "Not Found"
-if (isErrorResponse(res)) {
-    console.error("Error Code:", res.errorCode, "Message:", res.message);
+function assertResponse(object) {
+    if (object instanceof ErrorResponse) {
+        throw new Error("FAIL!!!");
+    }
 }
-else {
-    console.log("Data:", res.data);
-}
+const res = getResponse();
+assertResponse(res); // throw error in case < 50%
+console.log("Data:", res.data); // response
