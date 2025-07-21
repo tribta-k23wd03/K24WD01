@@ -64,6 +64,12 @@ const server = createServer(
       }
       return;
     }
+
+    // ROUTE: PUT/USER edit existing user
+    // validation (user?true:false)
+
+    // ROUTE: DELETE/USER delete existing user
+    // validation (user?true:false)
   }
 );
 
