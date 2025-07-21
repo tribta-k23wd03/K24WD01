@@ -1,21 +1,35 @@
 "use strict";
-function getResponse() {
-    const rand = Math.floor(Math.random() * 3); // 1 2 3
-    if (rand === 0)
-        return { status: 200, data: { message: "OK" } };
-    if (rand === 1)
-        return { status: 301, to: "https://google.com" };
-    return { status: 400, error: new Error("Bad Request") };
+/**
+ * ==============================
+ * LESSON: Type Guards
+ * ==============================
+ * Cũng là một function, nó trả về kết quả để xác
+ * định kiểu của Object.
+ */
+class APIErrorResponse {
+    constructor(errorCode, message) {
+        this.errorCode = errorCode;
+        this.message = message;
+    }
 }
-const response = getResponse();
-switch (response.status) {
-    case 200:
-        console.log("Data", response.data);
-        break;
-    case 301:
-        console.log("Redirected to:", response.to);
-        break;
-    case 400:
-        console.log("Error:", response.error.message);
-        break;
+class APISuccessResponse {
+    constructor(data) {
+        this.data = data;
+    }
+}
+function getResponse() {
+    if (Math.random() > 0.5) {
+        return new APISuccessResponse({ success: "OK" });
+    }
+    return new APIErrorResponse(404, "Not Found");
+}
+function isErrorResponse(obj) {
+    return obj instanceof APIErrorResponse;
+}
+const res = getResponse(); // { success: "OK" } | 404, "Not Found"
+if (isErrorResponse(res)) {
+    console.error("Error Code:", res.errorCode, "Message:", res.message);
+}
+else {
+    console.log("Data:", res.data);
 }
