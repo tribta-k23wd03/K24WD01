@@ -29,6 +29,7 @@ function parseBody(req) {
     });
 }
 const server = (0, http_1.createServer)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     // CORS & setup headers
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Content-Type", "application/json");
@@ -64,6 +65,31 @@ const server = (0, http_1.createServer)((req, res) => __awaiter(void 0, void 0, 
         }
         return;
     }
+    // ROUTE: PUT/USER edit existing user
+    // validation (user?true:false)
+    if (req.method === "PUT" && ((_a = req.url) === null || _a === void 0 ? void 0 : _a.startsWith("/users/"))) {
+        const id = Number(req.url.split("/")[2]); // Number
+        try {
+            const data = yield parseBody(req);
+            const user = users.find((u) => u.id === id);
+            if (!user) {
+                res.writeHead(404);
+                res.end(JSON.stringify({ message: "User Not Found" }));
+                return;
+            }
+            user.name = data.name || user.name;
+            user.email = data.email || user.email;
+            res.writeHead(200);
+            res.end(JSON.stringify(user));
+        }
+        catch (error) {
+            res.writeHead(400);
+            res.end(JSON.stringify({ message: "Invalid JSON" }));
+        }
+        return;
+    }
+    // ROUTE: DELETE/USER delete existing user
+    // validation (user?true:false)
 }));
 // localhost: PORT
 server.listen(9999, () => {

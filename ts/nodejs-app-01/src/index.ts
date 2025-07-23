@@ -67,6 +67,28 @@ const server = createServer(
 
     // ROUTE: PUT/USER edit existing user
     // validation (user?true:false)
+    if (req.method === "PUT" && req.url?.startsWith("/users/")) {
+      const id = Number(req.url.split("/")[2]); // Number
+
+      try {
+        const data = await parseBody(req);
+        const user = users.find((u) => u.id === id);
+
+        if (!user) {
+          res.writeHead(404);
+          res.end(JSON.stringify({ message: "User Not Found" }));
+          return;
+        }
+        user.name = data.name || user.name;
+        user.email = data.email || user.email;
+        res.writeHead(200);
+        res.end(JSON.stringify(user));
+      } catch (error) {
+        res.writeHead(400);
+        res.end(JSON.stringify({ message: "Invalid JSON" }));
+      }
+      return;
+    }
 
     // ROUTE: DELETE/USER delete existing user
     // validation (user?true:false)
