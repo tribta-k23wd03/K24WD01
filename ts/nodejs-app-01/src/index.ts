@@ -92,6 +92,21 @@ const server = createServer(
 
     // ROUTE: DELETE/USER delete existing user
     // validation (user?true:false)
+    if (req.method === "DELETE" && req.url?.startsWith("/users/")) {
+      const id = Number(req.url.split("/")[2]);
+
+      const index = users.findIndex((u) => u.id === id);
+
+      if (index === -1) {
+        res.writeHead(404);
+        res.end(JSON.stringify({ message: "User Not Found" }));
+        return;
+      }
+      users.splice(index, 1);
+      res.writeHead(204);
+      res.end();
+      return;
+    }
   }
 );
 

@@ -29,7 +29,7 @@ function parseBody(req) {
     });
 }
 const server = (0, http_1.createServer)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+    var _a, _b;
     // CORS & setup headers
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Content-Type", "application/json");
@@ -90,6 +90,19 @@ const server = (0, http_1.createServer)((req, res) => __awaiter(void 0, void 0, 
     }
     // ROUTE: DELETE/USER delete existing user
     // validation (user?true:false)
+    if (req.method === "DELETE" && ((_b = req.url) === null || _b === void 0 ? void 0 : _b.startsWith("/users/"))) {
+        const id = Number(req.url.split("/")[2]);
+        const index = users.findIndex((u) => u.id === id);
+        if (index === -1) {
+            res.writeHead(404);
+            res.end(JSON.stringify({ message: "User Not Found" }));
+            return;
+        }
+        users.splice(index, 1);
+        res.writeHead(204);
+        res.end();
+        return;
+    }
 }));
 // localhost: PORT
 server.listen(9999, () => {
