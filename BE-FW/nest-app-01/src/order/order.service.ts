@@ -7,7 +7,6 @@ import { Model } from 'mongoose';
 import { UsersService } from 'src/users/users.service';
 import { MenuService } from 'src/menu/menu.service';
 
-
 @Injectable()
 export class OrderService {
   constructor(
@@ -37,18 +36,39 @@ export class OrderService {
   }
 
   async findAll(): Promise<Order[]> {
-    return this.orderModel.find().exec();
+    return this.orderModel.find().populate('user').populate('item').exec();
   }
 
   async findOne(id: string): Promise<Order> {
-    const order = await this.orderModel.findById(id).exec();
+    const order = await this.orderModel
+      .findById(id)
+      .populate('user')
+      .populate('item')
+      .exec();
     if (!order) throw new NotFoundException('Order not found!');
     return order;
   }
 
-  async update(id: string, updateOrderDto: UpdateOrderDto): Promise<Order> {
+  async update(id: string, dto: UpdateOrderDto): Promise<Order> {
+    if (dto.user) {
+      await this.usersService.findOne(dto.user);
+    }
+    if (dto.item) {
+      for (const itemId of dto.item) {
+        await this.menuService.findOne(itemId);
+      }
+    }
+
+    const total = dto.item ? await this.caculatedTotal(dto.item) : undefined;
+
     const updatedOrder = await this.orderModel
-      .findByIdAndUpdate(id, updateOrderDto, { new: true })
+      .findByIdAndUpdate(
+        id,
+        { ...dto, ...(total != undefined ? { total } : {}) },
+        { new: true },
+      )
+      .populate('user')
+      .populate('item')
       .exec();
     if (!updatedOrder) throw new NotFoundException('Order not found!');
     return updatedOrder;
