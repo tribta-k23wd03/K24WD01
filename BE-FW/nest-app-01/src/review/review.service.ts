@@ -26,7 +26,7 @@ export class ReviewService {
     return this.reviewModel
       .find()
       .populate('user', 'name')
-      .populate({ path: 'menu', select: 'name' })
+      .populate({ path: 'item', select: 'name' })
       .exec();
   }
 
@@ -34,7 +34,7 @@ export class ReviewService {
     const review = this.reviewModel
       .findById(id)
       .populate('user', 'name')
-      .populate({ path: 'menu', select: 'name' })
+      .populate({ path: 'item', select: 'name' })
       .exec();
     if (!review) throw new NotFoundException('Review not found!');
     return review;
@@ -44,7 +44,7 @@ export class ReviewService {
     const updatedReview = this.reviewModel
       .findByIdAndUpdate(id, updateReviewDto, { new: true })
       .populate('user', 'name')
-      .populate({ path: 'menu', select: 'name' })
+      .populate({ path: 'item', select: 'name' })
       .exec();
     if (!updatedReview) throw new NotFoundException('Review not found!');
     return updatedReview;
