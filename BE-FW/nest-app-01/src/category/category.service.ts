@@ -10,7 +10,6 @@ export class CategoryService {
   constructor(
     @InjectModel(Category.name) private categoryModel: Model<Category>,
   ) {}
-  
   create(createCategoryDto: CreateCategoryDto): Promise<Category> {
     const createdCategory = new this.categoryModel(createCategoryDto);
     return createdCategory.save();
@@ -26,8 +25,8 @@ export class CategoryService {
     return category;
   }
 
-  update(id: string, updateCategoryDto: UpdateCategoryDto) {
-    const updatedCategory = this.categoryModel
+  async update(id: string, updateCategoryDto: UpdateCategoryDto):Promise<Category> {
+    const updatedCategory = await this.categoryModel
       .findByIdAndUpdate(id, updateCategoryDto, { new: true })
       .exec();
     if (!updatedCategory) throw new NotFoundException('Category not found!');
