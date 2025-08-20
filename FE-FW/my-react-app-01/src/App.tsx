@@ -1,9 +1,9 @@
-import List from "./components/List";
+import Notification from "./components/notifications/Notification";
 
 function App() {
   return (
     <>
-      <List />
+      <Notification />
     </>
   );
 }
