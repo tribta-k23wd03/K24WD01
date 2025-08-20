@@ -1,4 +1,11 @@
-import "./App.css"
-export default function App() {
-  return <h1>Hello, World</h1>;
+import List from "./components/List";
+
+function App() {
+  return (
+    <>
+      <List />
+    </>
+  );
 }
+
+export default App;
