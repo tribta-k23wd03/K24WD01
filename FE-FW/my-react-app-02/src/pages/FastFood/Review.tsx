@@ -82,7 +82,13 @@ export default function Review() {
       <header className="header">
         <h1 className="title">Review Lists</h1>
       </header>
-      <form action=""></form>
+      <form action="">
+        <div><input value={form.user} onChange={(e)=>setForm({...form, user:e.target.value})} placeholder="Enter User Id"/></div>
+        <div><input value={form.item} onChange={(e)=>setForm({...form, item:e.target.value})} placeholder="Enter Item Id"/></div>
+        <div><input value={form.rating} onChange={(e)=>setForm({...form, rating:Number(e.target.value)})} placeholder="Enter Rating (1 -> 5)"/></div>
+        <div><input value={form.comment} onChange={(e)=>setForm({...form, comment:e.target.value})} placeholder="Enter Your Comment"/></div>
+        <div><button type="submit" disabled={processing}>{processing ? 'Sending Review...' : 'Send Review'}</button></div>
+      </form>
       <ul className="list">
         {data.map((u) => (
           <li key={u._id} className="item">
