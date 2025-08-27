@@ -33,13 +33,17 @@ export default function Review() {
   }, []);
 
   return (
-    <div>
-      <h1>Review Lists</h1>
-      <ul>
+    <main className="container">
+      <header className="header">
+        <h1 className="title">Review Lists</h1>
+      </header>
+      <ul className="list">
         {data.map((u) => (
-          <li key={u._id}>
-            <div>{getMenuItem(u.item)}</div>
-            <div>by {getUserName(u.user)}</div>
+          <li key={u._id} className="item">
+            <div className="itemHead">
+              <div><strong>{getMenuItem(u.item)}</strong></div>
+              <div className="muted">by {getUserName(u.user)}</div>
+            </div>
             <div>
               <Stars value={u.rating} title={`Rating: ${u.rating}/5`} />
             </div>
@@ -47,6 +51,6 @@ export default function Review() {
           </li>
         ))}
       </ul>
-    </div>
+    </main>
   );
 }
