@@ -56,19 +56,22 @@ export default function Review() {
   const ctrl = new AbortController();
 
   useEffect(() => {
+    setLoading(true);
+    setError(null);
+    fetchReview()
+      .then(setData)
+      .catch((e) => {
+        if (e.name !== "AbortError") setError(e.message ?? "Loading Failed");
+      })
+      .finally(() => setLoading(false));
+    return () => ctrl.abort();
+  }, []);
+
+  useEffect(() => {
     const run = async () => {
-      setLoading(true);
-      setError(null);
       const [u, i] = await Promise.all([fetchUser(), fetchMenu()]);
       setUsers(u);
       setItems(i);
-      fetchReview()
-        .then(setData)
-        .catch((e) => {
-          if (e.name !== "AbortError") setError(e.message ?? "Loading Failed");
-        })
-        .finally(() => setLoading(false));
-      return () => ctrl.abort();
     };
     run();
   }, []);
@@ -115,7 +118,7 @@ export default function Review() {
           <select
             value={form.item}
             onChange={(e) => setForm({ ...form, item: e.target.value })}>
-            {users.map((i) => (
+            {items.map((i) => (
               <option key={i._id} value={i._id}>
                 {itemLabel(i)}
               </option>
