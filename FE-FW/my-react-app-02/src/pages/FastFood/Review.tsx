@@ -41,13 +41,18 @@ export default function Review() {
         {data.map((u) => (
           <li key={u._id} className="item">
             <div className="itemHead">
-              <div><strong>{getMenuItem(u.item)}</strong></div>
-              <div className="muted">by {getUserName(u.user)}</div>
+              <div className="meta">
+                <div>
+                  <strong>{getMenuItem(u.item)}</strong>
+                </div>
+                <div className="muted">by {getUserName(u.user)}</div>
+              </div>
+
+              <div>
+                <Stars value={u.rating} title={`Rating: ${u.rating}/5`} />
+              </div>
             </div>
-            <div>
-              <Stars value={u.rating} title={`Rating: ${u.rating}/5`} />
-            </div>
-            <div> - {u.comment}</div>
+              <p style={{ marginTop: 10, marginBottom: 0 }}> - {u.comment}</p>
           </li>
         ))}
       </ul>
