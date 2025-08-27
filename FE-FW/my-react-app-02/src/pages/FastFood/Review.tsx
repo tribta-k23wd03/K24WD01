@@ -91,6 +91,9 @@ export default function Review() {
     setData((p) => p.filter((r) => r._id !== id));
   };
 
+  const userLabel = (u: IdName) => u.name ?? u.email ?? u._id;
+  const itemLabel = (i: IdName) => i.name ?? i._id;
+
   return (
     <main className="container">
       <header className="header">
@@ -98,18 +101,26 @@ export default function Review() {
       </header>
       <form onSubmit={onCreate}>
         <div>
-          <input
+          <select
             value={form.user}
-            onChange={(e) => setForm({ ...form, user: e.target.value })}
-            placeholder="Enter User Id"
-          />
+            onChange={(e) => setForm({ ...form, user: e.target.value })}>
+            {users.map((u) => (
+              <option key={u._id} value={u._id}>
+                {userLabel(u)}
+              </option>
+            ))}
+          </select>
         </div>
         <div>
-          <input
+          <select
             value={form.item}
-            onChange={(e) => setForm({ ...form, item: e.target.value })}
-            placeholder="Enter Item Id"
-          />
+            onChange={(e) => setForm({ ...form, item: e.target.value })}>
+            {users.map((i) => (
+              <option key={i._id} value={i._id}>
+                {itemLabel(i)}
+              </option>
+            ))}
+          </select>
         </div>
         <div>
           <input
