@@ -27,6 +27,7 @@ export class ReviewService {
       .find()
       .populate('user', 'name')
       .populate({ path: 'item', select: 'name' })
+      .sort({ createdAt: -1 })
       .exec();
   }
 

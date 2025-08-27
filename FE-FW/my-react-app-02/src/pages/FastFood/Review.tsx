@@ -82,12 +82,42 @@ export default function Review() {
       <header className="header">
         <h1 className="title">Review Lists</h1>
       </header>
-      <form action="">
-        <div><input value={form.user} onChange={(e)=>setForm({...form, user:e.target.value})} placeholder="Enter User Id"/></div>
-        <div><input value={form.item} onChange={(e)=>setForm({...form, item:e.target.value})} placeholder="Enter Item Id"/></div>
-        <div><input value={form.rating} onChange={(e)=>setForm({...form, rating:Number(e.target.value)})} placeholder="Enter Rating (1 -> 5)"/></div>
-        <div><input value={form.comment} onChange={(e)=>setForm({...form, comment:e.target.value})} placeholder="Enter Your Comment"/></div>
-        <div><button type="submit" disabled={processing}>{processing ? 'Sending Review...' : 'Send Review'}</button></div>
+      <form onSubmit={onCreate}>
+        <div>
+          <input
+            value={form.user}
+            onChange={(e) => setForm({ ...form, user: e.target.value })}
+            placeholder="Enter User Id"
+          />
+        </div>
+        <div>
+          <input
+            value={form.item}
+            onChange={(e) => setForm({ ...form, item: e.target.value })}
+            placeholder="Enter Item Id"
+          />
+        </div>
+        <div>
+          <input
+            value={form.rating}
+            onChange={(e) =>
+              setForm({ ...form, rating: Number(e.target.value) })
+            }
+            placeholder="Enter Rating (1 -> 5)"
+          />
+        </div>
+        <div>
+          <input
+            value={form.comment}
+            onChange={(e) => setForm({ ...form, comment: e.target.value })}
+            placeholder="Enter Your Comment"
+          />
+        </div>
+        <div>
+          <button className="btn primary" type="submit" disabled={processing}>
+            {processing ? "Sending Review..." : "Send Review"}
+          </button>
+        </div>
       </form>
       <ul className="list">
         {data.map((u) => (
@@ -102,6 +132,9 @@ export default function Review() {
 
               <div>
                 <Stars value={u.rating} title={`Rating: ${u.rating}/5`} />
+                <button className="btn danger" onClick={() => onDelete(u._id)}>
+                  Delete
+                </button>
               </div>
             </div>
             <p style={{ marginTop: 10, marginBottom: 0 }}> - {u.comment}</p>
