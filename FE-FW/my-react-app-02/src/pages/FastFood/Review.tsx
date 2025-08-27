@@ -102,6 +102,7 @@ export default function Review() {
       <header className="header">
         <h1 className="title">Review Lists</h1>
       </header>
+
       <form onSubmit={onCreate}>
         <div>
           <select
@@ -131,7 +132,6 @@ export default function Review() {
             onChange={(e) =>
               setForm({ ...form, rating: Number(e.target.value) })
             }
-            placeholder="Enter Rating (1 -> 5)"
           />
         </div>
         <div>
