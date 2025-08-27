@@ -85,8 +85,30 @@ export default function Review() {
 
     setProcessing(true);
     const created = await createReview(form);
-    setData((p) => [created, ...p]);
+
+    const u = users.find((x) => x._id === form.user);
+    const m = items.find((x) => x._id === form.item);
+
+    const created2 = {
+      ...created,
+      user:
+        typeof created.user === "string"
+          ? u
+            ? { _id: created.user, name: u.name ?? u.email }
+            : created.user
+          : created.user,
+      item:
+        typeof created.item === "string"
+          ? m
+            ? { _id: created.item, name: m.name }
+            : created.item
+          : created.item,
+    };
+
+    setData((p) => [created2, ...p]);
+
     setForm({ user: "", item: "", rating: 0, comment: "" });
+    setProcessing(false);
   };
 
   const onDelete = async (id: string) => {
