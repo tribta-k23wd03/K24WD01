@@ -9,6 +9,11 @@ import fetchReview, {
   deleteReview,
 } from "../../components/FastFood/api/review";
 import Stars from "../../components/FastFood/components/Stars";
+import {
+  fetchMenu,
+  fetchUser,
+  type IdName,
+} from "../../components/FastFood/api/lookup";
 
 type NewReview = {
   user: string;
@@ -36,6 +41,9 @@ function getMenuItem(m: Review["item"]): string {
 export default function Review() {
   const [data, setData] = useState<Review[]>([]);
 
+  const [users, setUsers] = useState<IdName[]>([]);
+  const [items, setItems] = useState<IdName[]>([]);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [form, setForm] = useState<NewReview>({
@@ -48,15 +56,21 @@ export default function Review() {
   const ctrl = new AbortController();
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
-    fetchReview()
-      .then(setData)
-      .catch((e) => {
-        if (e.name !== "AbortError") setError(e.message ?? "Loading Failed");
-      })
-      .finally(() => setLoading(false));
-    return () => ctrl.abort();
+    const run = async () => {
+      setLoading(true);
+      setError(null);
+      const [u, i] = await Promise.all([fetchUser(), fetchMenu()]);
+      setUsers(u);
+      setItems(i);
+      fetchReview()
+        .then(setData)
+        .catch((e) => {
+          if (e.name !== "AbortError") setError(e.message ?? "Loading Failed");
+        })
+        .finally(() => setLoading(false));
+      return () => ctrl.abort();
+    };
+    run();
   }, []);
 
   const onCreate = async (e: React.FormEvent) => {
