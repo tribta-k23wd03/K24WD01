@@ -108,6 +108,7 @@ export default function Review() {
           <select
             value={form.user}
             onChange={(e) => setForm({ ...form, user: e.target.value })}>
+            <option value={""}>--Pick User--</option>
             {users.map((u) => (
               <option key={u._id} value={u._id}>
                 {userLabel(u)}
@@ -119,6 +120,7 @@ export default function Review() {
           <select
             value={form.item}
             onChange={(e) => setForm({ ...form, item: e.target.value })}>
+            <option value={""}>--Pick Item--</option>
             {items.map((i) => (
               <option key={i._id} value={i._id}>
                 {itemLabel(i)}
