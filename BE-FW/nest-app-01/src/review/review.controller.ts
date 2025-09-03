@@ -6,10 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { ReviewService } from './review.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
+import { FastFoodJwtGuard } from 'src/auth/fastfood-jwt.guard';
 
 @Controller('review')
 export class ReviewController {
@@ -30,11 +32,13 @@ export class ReviewController {
     return this.reviewService.findOne(id);
   }
 
+  @UseGuards(FastFoodJwtGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateReviewDto: UpdateReviewDto) {
     return this.reviewService.update(id, updateReviewDto);
   }
 
+  @UseGuards(FastFoodJwtGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.reviewService.remove(id);

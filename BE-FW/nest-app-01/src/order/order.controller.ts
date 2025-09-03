@@ -6,10 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { FastFoodJwtGuard } from 'src/auth/fastfood-jwt.guard';
 
 @Controller('order')
 export class OrderController {
@@ -35,6 +37,7 @@ export class OrderController {
     return this.orderService.update(id, updateOrderDto);
   }
 
+  @UseGuards(FastFoodJwtGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.orderService.remove(id);
