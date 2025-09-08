@@ -24,7 +24,7 @@ export class OrderController {
 
   private async loadAndAuthorize(req: any, id: string) {
     const order = await this.orderService.findOne(id);
-    if (order.userId !== getUserId(req)) {
+    if ((order as any).userId !== getUserId(req)) {
       ensureRole(req, 'admin');
     }
     return order;
@@ -37,6 +37,7 @@ export class OrderController {
     return this.orderService.findAll();
   }
 
+  @UseGuards(FastFoodJwtGuard)
   @Get(':id')
   findOne(@Req() req: any, @Param('id') id: string) {
     return this.loadAndAuthorize(req, id);
@@ -47,7 +48,7 @@ export class OrderController {
   create(@Req() req: any, @Body() createOrderDto: CreateOrderDto) {
     return this.orderService.create(createOrderDto, getUserId(req));
   }
-
+  @UseGuards(FastFoodJwtGuard)
   @Patch(':id')
   async update(
     @Req() req: any,

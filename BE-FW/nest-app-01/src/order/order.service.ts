@@ -25,16 +25,13 @@ export class OrderService {
   }
 
   async create(createOrderDto: CreateOrderDto, userId: string): Promise<Order> {
-    for (const itemId of createOrderDto.item) {
-      await this.menuService.findOne(itemId);
-    }
     const total = await this.caculatedTotal(createOrderDto.item);
     const order = new this.orderModel({ ...createOrderDto, total, userId });
     return order.save();
   }
 
   async findAll(): Promise<Order[]> {
-    return this.orderModel.find().populate('user').populate('item').exec();
+    return this.orderModel.find().populate('item').exec();
   }
 
   async findOne(id: string): Promise<Order> {
@@ -48,11 +45,7 @@ export class OrderService {
   }
 
   async update(id: string, dto: UpdateOrderDto): Promise<Order> {
-    if (dto.item) {
-      for (const itemId of dto.item) {
-        await this.menuService.findOne(itemId);
-      }
-    }
+  
     const total = dto.item ? await this.caculatedTotal(dto.item) : undefined;
     const updatedOrder = await this.orderModel
       .findByIdAndUpdate(

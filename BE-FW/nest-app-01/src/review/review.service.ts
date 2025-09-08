@@ -24,7 +24,6 @@ export class ReviewService {
   findAll(): Promise<Review[]> {
     return this.reviewModel
       .find()
-      .populate('user', 'name')
       .populate({ path: 'item', select: 'name' })
       .sort({ createdAt: -1 })
       .exec();
@@ -33,7 +32,6 @@ export class ReviewService {
   findOne(id: string): Promise<Review | null> {
     const review = this.reviewModel
       .findById(id)
-      .populate('user', 'name')
       .populate({ path: 'item', select: 'name' })
       .exec();
     if (!review) throw new NotFoundException('Review not found!');
@@ -43,7 +41,6 @@ export class ReviewService {
   update(id: string, updateReviewDto: UpdateReviewDto) {
     const updatedReview = this.reviewModel
       .findByIdAndUpdate(id, updateReviewDto, { new: true })
-      .populate('user', 'name')
       .populate({ path: 'item', select: 'name' })
       .exec();
     if (!updatedReview) throw new NotFoundException('Review not found!');
