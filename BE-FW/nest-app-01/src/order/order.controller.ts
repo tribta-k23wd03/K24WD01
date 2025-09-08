@@ -7,39 +7,62 @@ import {
   Param,
   Delete,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
-import { FastFoodJwtGuard } from 'src/auth/fastfood-jwt.guard';
+import {
+  ensureRole,
+  FastFoodJwtGuard,
+  getUserId,
+} from 'src/auth/fastfood-jwt.guard';
 
 @Controller('order')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
-  @Post()
-  create(@Body() createOrderDto: CreateOrderDto) {
-    return this.orderService.create(createOrderDto);
+  private async loadAndAuthorize(req: any, id: string) {
+    const order = await this.orderService.findOne(id);
+    if (order.userId !== getUserId(req)) {
+      ensureRole(req, 'admin');
+    }
+    return order;
   }
 
+  @UseGuards(FastFoodJwtGuard)
   @Get()
-  findAll() {
+  findAll(@Req() req: any) {
+    ensureRole(req, 'admin');
     return this.orderService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.orderService.findOne(id);
+  findOne(@Req() req: any, @Param('id') id: string) {
+    return this.loadAndAuthorize(req, id);
+  }
+
+  @UseGuards(FastFoodJwtGuard)
+  @Post()
+  create(@Req() req: any, @Body() createOrderDto: CreateOrderDto) {
+    return this.orderService.create(createOrderDto, getUserId(req));
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
+  async update(
+    @Req() req: any,
+    @Param('id') id: string,
+    @Body() updateOrderDto: UpdateOrderDto,
+  ) {
+    await this.loadAndAuthorize(req, id);
     return this.orderService.update(id, updateOrderDto);
   }
 
   @UseGuards(FastFoodJwtGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.orderService.remove(id);
+  async remove(@Req() req: any, @Param('id') id: string) {
+    await this.loadAndAuthorize(req, id);
+    const deleted = await this.orderService.remove(id);
+    return { id: deleted.id, message: 'Your order has been deleted.' };
   }
 }

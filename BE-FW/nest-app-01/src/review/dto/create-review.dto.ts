@@ -2,8 +2,6 @@ import { IsMongoId, IsNumber, IsString, Max, Min, min } from 'class-validator';
 
 export class CreateReviewDto {
   @IsMongoId()
-  user: string;
-  @IsMongoId()
   item: string;
 
   @IsNumber()

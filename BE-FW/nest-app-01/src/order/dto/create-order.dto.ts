@@ -1,8 +1,7 @@
-import { IsArray, IsMongoId } from 'class-validator';
+import { IsArray, IsMongoId, IsString } from 'class-validator';
 
 export class CreateOrderDto {
-  @IsMongoId()
-  user: string;
+
 
   @IsArray()
   @IsMongoId({ each: true })

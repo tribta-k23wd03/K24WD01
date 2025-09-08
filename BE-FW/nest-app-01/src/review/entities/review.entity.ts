@@ -3,8 +3,8 @@ import { Document, Types } from 'mongoose';
 
 @Schema({ timestamps: true })
 export class Review extends Document {
-  @Prop({ type: Types.ObjectId, ref: 'User' })
-  user: Types.ObjectId;
+  @Prop({ required: true })
+  userId: string;
   @Prop({ type: Types.ObjectId, ref: 'Menu' })
   item: Types.ObjectId;
   @Prop()

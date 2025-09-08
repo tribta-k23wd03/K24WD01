@@ -24,13 +24,12 @@ export class OrderService {
     return total;
   }
 
-  async create(createOrderDto: CreateOrderDto): Promise<Order> {
+  async create(createOrderDto: CreateOrderDto, userId: string): Promise<Order> {
     for (const itemId of createOrderDto.item) {
       await this.menuService.findOne(itemId);
     }
-
     const total = await this.caculatedTotal(createOrderDto.item);
-    const order = new this.orderModel({ ...createOrderDto, total });
+    const order = new this.orderModel({ ...createOrderDto, total, userId });
     return order.save();
   }
 
@@ -49,24 +48,18 @@ export class OrderService {
   }
 
   async update(id: string, dto: UpdateOrderDto): Promise<Order> {
-    if (dto.user) {
-      await this.findOne(dto.user);
-    }
     if (dto.item) {
       for (const itemId of dto.item) {
         await this.menuService.findOne(itemId);
       }
     }
-
     const total = dto.item ? await this.caculatedTotal(dto.item) : undefined;
-
     const updatedOrder = await this.orderModel
       .findByIdAndUpdate(
         id,
         { ...dto, ...(total != undefined ? { total } : {}) },
         { new: true },
       )
-      .populate('user')
       .populate('item')
       .exec();
     if (!updatedOrder) throw new NotFoundException('Order not found!');

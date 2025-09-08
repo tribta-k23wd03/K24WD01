@@ -4,22 +4,21 @@ import { UpdateReviewDto } from './dto/update-review.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Review } from './entities/review.entity';
 import { Model } from 'mongoose';
-import { UsersService } from 'src/users/users.service';
 import { MenuService } from 'src/menu/menu.service';
 
 @Injectable()
 export class ReviewService {
   constructor(
     @InjectModel(Review.name) private reviewModel: Model<Review>,
-    private usersService: UsersService,
     private menuService: MenuService,
   ) {}
 
-  async create(createReviewDto: CreateReviewDto): Promise<Review> {
-    await this.usersService.findOne(createReviewDto.user);
+  async create(
+    createReviewDto: CreateReviewDto,
+    userId: string,
+  ): Promise<Review> {
     await this.menuService.findOne(createReviewDto.item);
-    const createdReview = new this.reviewModel(createReviewDto);
-    return createdReview.save();
+    return new this.reviewModel({ ...createReviewDto, userId }).save();
   }
 
   findAll(): Promise<Review[]> {

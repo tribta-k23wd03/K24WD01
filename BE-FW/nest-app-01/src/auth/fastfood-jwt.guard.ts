@@ -22,9 +22,10 @@ export class FastFoodJwtGuard implements CanActivate {
     return true;
   }
 }
+export const getUserId = (req: any): string => req?.user?.id;
 
-export const isAdmin = (req: any) => req.user.role.include('admin') || false;
-
-export const ensureAdmin = (req: any) => {
-  if (!isAdmin(req)) throw new ForbiddenException('FORBIDDEN.');
+export const ensureRole = (req: any, role: string) => {
+  if (!req.user?.roles?.include(role)) {
+    throw new ForbiddenException(`Only ${role} can access!`);
+  }
 };
