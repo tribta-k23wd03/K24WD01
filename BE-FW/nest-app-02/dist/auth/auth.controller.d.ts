@@ -10,12 +10,12 @@ export declare class AuthController {
     register(dto: RegisterDto): Promise<{
         access_token: string;
         token_type: string;
-        expires_in: number;
+        expires_in: string;
     }>;
     login(dto: LoginDto): Promise<{
         access_token: string;
         token_type: string;
-        expires_in: number;
+        expires_in: string;
     }>;
     me(req: Request): {
         sub: any;

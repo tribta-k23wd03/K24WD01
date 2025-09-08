@@ -47,6 +47,7 @@ const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const users_service_1 = require("../users/users.service");
 const bcrypt = __importStar(require("bcrypt"));
+const constants_1 = require("../constants");
 let AuthService = class AuthService {
     users;
     jwt;
@@ -73,7 +74,7 @@ let AuthService = class AuthService {
     }
     sign(sub, email, roles) {
         const access_token = this.jwt.sign({ sub, email, roles });
-        return { access_token, token_type: 'Bearer', expires_in: 3600 };
+        return { access_token, token_type: 'Bearer', expires_in: constants_1.JWT_EXPIRES };
     }
 };
 exports.AuthService = AuthService;

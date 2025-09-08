@@ -7,12 +7,12 @@ export declare class AuthService {
     register(email: string, password: string): Promise<{
         access_token: string;
         token_type: string;
-        expires_in: number;
+        expires_in: string;
     }>;
     login(email: string, password: string): Promise<{
         access_token: string;
         token_type: string;
-        expires_in: number;
+        expires_in: string;
     }>;
     private sign;
 }
