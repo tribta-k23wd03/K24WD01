@@ -9,7 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ChatService = void 0;
 const common_1 = require("@nestjs/common");
 let ChatService = class ChatService {
-    msgs;
+    msgs = [];
     cap = 100;
     add(m) {
         this.msgs.push(m);

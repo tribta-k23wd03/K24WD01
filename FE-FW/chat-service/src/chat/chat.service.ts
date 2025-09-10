@@ -4,7 +4,7 @@ export type ChatMsg = { id: string; text: string; at: number; from: string };
 
 @Injectable()
 export class ChatService {
-  private msgs: ChatMsg[];
+  private msgs: ChatMsg[]=[];
   private cap = 100;
 
   add(m: ChatMsg) {
