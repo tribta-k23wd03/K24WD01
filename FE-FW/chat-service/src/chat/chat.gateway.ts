@@ -1,15 +1,19 @@
-import { WebSocketGateway } from '@nestjs/websockets';
+import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { ChatMsg, ChatService } from './chat.service';
 import { AuthMsClient } from 'src/auth.ms.client';
 import { URL } from 'url';
 import { REQUIRE_AUTH } from 'src/constants';
 import { firstValueFrom } from 'rxjs';
 import { v4 as uuid } from 'uuid';
+import type { Server, WebSocket } from 'ws';
+import { Injectable } from '@nestjs/common';
 
 type ClientMeta = { name: string; userId?: string; email?: string };
 
 @WebSocketGateway({ path: '/chat' }) // ws://127.0.0.1:7777/chat
+@Injectable()
 export class ChatGateway {
+  @WebSocketServer() server: Server;
   private metas = new WeakMap<WebSocket, ClientMeta>();
 
   constructor(

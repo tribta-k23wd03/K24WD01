@@ -17,9 +17,11 @@ const url_1 = require("url");
 const constants_1 = require("../constants");
 const rxjs_1 = require("rxjs");
 const uuid_1 = require("uuid");
+const common_1 = require("@nestjs/common");
 let ChatGateway = class ChatGateway {
     chat;
     auth;
+    server;
     metas = new WeakMap();
     constructor(chat, auth) {
         this.chat = chat;
@@ -72,8 +74,13 @@ let ChatGateway = class ChatGateway {
     }
 };
 exports.ChatGateway = ChatGateway;
+__decorate([
+    (0, websockets_1.WebSocketServer)(),
+    __metadata("design:type", Object)
+], ChatGateway.prototype, "server", void 0);
 exports.ChatGateway = ChatGateway = __decorate([
     (0, websockets_1.WebSocketGateway)({ path: '/chat' }),
+    (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [chat_service_1.ChatService,
         auth_ms_client_1.AuthMsClient])
 ], ChatGateway);
