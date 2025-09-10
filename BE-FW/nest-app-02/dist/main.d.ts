@@ -1,1 +1,1 @@
-export {};
+import '@nestjs/microservices';

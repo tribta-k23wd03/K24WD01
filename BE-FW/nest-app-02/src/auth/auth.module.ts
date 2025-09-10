@@ -4,6 +4,7 @@ import { AuthController } from './auth.controller';
 import { UsersModule } from 'src/users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JWT_EXPIRES, JWT_SECRET } from 'src/constants';
+import { AuthMsController } from './auth.ms.controller';
 
 @Module({
   imports: [
@@ -13,7 +14,7 @@ import { JWT_EXPIRES, JWT_SECRET } from 'src/constants';
       signOptions: { expiresIn: JWT_EXPIRES },
     }),
   ],
-  controllers: [AuthController],
+  controllers: [AuthController, AuthMsController],
   providers: [AuthService],
   exports: [JwtModule],
 })
