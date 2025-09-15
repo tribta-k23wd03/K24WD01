@@ -1,6 +1,15 @@
+import { getToken } from "../../../auth/storage";
 import type { Review } from "../types/types";
 
 const API_BASE = "http://localhost:9999";
+// const API_BASE_AUTH = "http://localhost:8888";
+
+function authHeaders(): Record<string, string> {
+  const t = getToken();
+  const r: Record<string, string> = {};
+  if (t) r.Authorization = `Bearer ${t}`;
+  return r;
+}
 
 export default async function fetchReview(): Promise<Review[]> {
   const res = await fetch(`${API_BASE}/review`);
@@ -19,7 +28,7 @@ export async function createReview(payload: {
 }): Promise<Review> {
   const res = await fetch(`${API_BASE}/review`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { ...authHeaders() },
     body: JSON.stringify(payload),
   });
 
@@ -32,7 +41,10 @@ export async function createReview(payload: {
 }
 
 export async function deleteReview(id: string): Promise<void> {
-  const res = await fetch(`${API_BASE}/review/${id}`, { method: "DELETE" });
+  const res = await fetch(`${API_BASE}/review/${id}`, {
+    method: "DELETE",
+    headers: { ...authHeaders() },
+  });
 
   if (!res.ok) {
     const text = await res.text().catch(() => "");
