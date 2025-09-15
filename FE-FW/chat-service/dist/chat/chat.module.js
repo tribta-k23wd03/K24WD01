@@ -11,12 +11,19 @@ const common_1 = require("@nestjs/common");
 const chat_service_1 = require("./chat.service");
 const chat_gateway_1 = require("./chat.gateway");
 const auth_ms_client_1 = require("../auth.ms.client");
+const chat_controller_1 = require("./chat.controller");
+const mongoose_1 = require("@nestjs/mongoose");
+const chat_entity_1 = require("./entities/chat.entity");
 let ChatModule = class ChatModule {
 };
 exports.ChatModule = ChatModule;
 exports.ChatModule = ChatModule = __decorate([
     (0, common_1.Module)({
+        imports: [
+            mongoose_1.MongooseModule.forFeature([{ name: chat_entity_1.Chat.name, schema: chat_entity_1.ChatSchema }]),
+        ],
         providers: [chat_gateway_1.ChatGateway, chat_service_1.ChatService, auth_ms_client_1.AuthMsClient],
+        controllers: [chat_controller_1.ChatController],
     })
 ], ChatModule);
 //# sourceMappingURL=chat.module.js.map

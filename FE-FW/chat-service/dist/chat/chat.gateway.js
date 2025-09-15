@@ -38,17 +38,17 @@ let ChatGateway = class ChatGateway {
                 ((meta.userId = payload.sub), (meta.email = payload.email));
             }
             catch {
-                client.close(1008, 'Invalid Token');
+                client.close(1008, 'Invalid Tokens');
                 return;
             }
         }
-        else if (constants_1.REQUIRE_AUTH && token) {
+        else if (constants_1.REQUIRE_AUTH && !token) {
             client.close(1008, 'Invalid Token');
             return;
         }
         this.metas.set(client, meta);
-        client.send(JSON.stringify({ type: 'hello', you: meta, recent: this.chat.recent() }));
-        client.on('message', (buf) => {
+        client.send(JSON.stringify({ type: 'hello', you: meta, recent: await this.chat.recent() }));
+        client.on('message', async (buf) => {
             const text = (typeof buf === 'string' ? buf : buf.toString()).trim();
             if (!text)
                 return;
@@ -58,7 +58,7 @@ let ChatGateway = class ChatGateway {
                 at: Date.now(),
                 from: meta.userId ? meta.email || meta.name : meta.name,
             };
-            this.chat.add(m);
+            await this.chat.add(m);
             this.broadcast({ type: 'chat.new', msg: m });
         });
     }

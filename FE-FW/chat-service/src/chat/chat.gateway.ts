@@ -1,5 +1,5 @@
 import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
-import { ChatMsg, ChatService } from './chat.service';
+import { ChatService } from './chat.service';
 import { AuthMsClient } from 'src/auth.ms.client';
 import { URL } from 'url';
 import { REQUIRE_AUTH } from 'src/constants';
@@ -7,6 +7,7 @@ import { firstValueFrom } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 import type { Server, WebSocket } from 'ws';
 import { Injectable } from '@nestjs/common';
+import { CreateChatDto } from './dto/chat.dto';
 
 type ClientMeta = { name: string; userId?: string; email?: string };
 
@@ -35,30 +36,30 @@ export class ChatGateway {
         const payload = await firstValueFrom(this.auth.sendVerify(token));
         ((meta.userId = payload.sub), (meta.email = payload.email));
       } catch {
-        client.close(1008, 'Invalid Token');
+        client.close(1008, 'Invalid Tokens');
         return;
       }
-    } else if (REQUIRE_AUTH && token) {
+    } else if (REQUIRE_AUTH && !token) {
       client.close(1008, 'Invalid Token');
       return;
     }
     this.metas.set(client, meta);
     client.send(
-      JSON.stringify({ type: 'hello', you: meta, recent: this.chat.recent() }),
+      JSON.stringify({ type: 'hello', you: meta, recent: await this.chat.recent() }),
     );
 
     // Send messages:
-    client.on('message', (buf) => {
+    client.on('message', async (buf) => {
       const text = (typeof buf === 'string' ? buf : buf.toString()).trim();
       if (!text) return;
 
-      const m: ChatMsg = {
+      const m: CreateChatDto = {
         id: uuid(),
         text,
         at: Date.now(),
         from: meta.userId ? meta.email || meta.name : meta.name,
       };
-      this.chat.add(m);
+      await this.chat.add(m);
       this.broadcast({ type: 'chat.new', msg: m });
     });
   }

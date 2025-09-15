@@ -1,18 +1,22 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Chat, ChatDocument } from './entities/chat.entity';
+import { Model } from 'mongoose';
+import { CreateChatDto } from './dto/chat.dto';
 
-export type ChatMsg = { id: string; text: string; at: number; from: string };
+// export type ChatMsg = { id: string; text: string; at: number; from: string };
 
 @Injectable()
 export class ChatService {
-  private msgs: ChatMsg[]=[];
-  private cap = 100;
+  constructor(@InjectModel(Chat.name) private model: Model<ChatDocument>) {}
+  // private msgs: ChatMsg[] = [];
+  // private cap = 100;
 
-  add(m: ChatMsg) {
-    this.msgs.push(m);
-    if (this.msgs.length > this.cap) this.msgs.shift();
+  add(dto: CreateChatDto) {
+    return this.model.create(dto);
   }
 
   recent() {
-    return this.msgs;
+    return this.model.find().limit(100).lean();
   }
 }
